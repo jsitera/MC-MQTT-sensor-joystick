@@ -35,8 +35,11 @@ void setup() {
   Serial.begin(115200);
   setup_wifi();
   client.setServer(mqtt_server, 1883);
+  pinMode(JoyStick_X, INPUT);
+  pinMode(JoyStick_Y, INPUT);
+  pinMode(JoyStick_button, INPUT_PULLUP);
   Serial.println("Minecraft MQTT sensor started.");
-
+  
 }
 
 void setup_wifi() {
@@ -64,7 +67,7 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("ESP32Client")) {
+    if (client.connect("MC-MQTT-sensor-joystick-ESP32")) { // name must be unique
       Serial.println("connected");
     } else {
       Serial.print("failed, rc=");
@@ -91,7 +94,7 @@ void loop(){
   client.loop();
 
   long now = millis();
-  if (now - lastMsg > 500) { // call the following code each x miliseconds
+  if (now - lastMsg > 100) { // call the following code each x miliseconds
     lastMsg = now;
 
     // this is the interesting part / reading sensors, handling data and sending MQTT
@@ -125,6 +128,12 @@ void loop(){
     if (y > 5 ) {
       Serial.println("U");
       client.publish(joystick_topic_Y, "U", true);
+    }
+
+    if (button == 0) {   //reversed (pull up)
+      Serial.println("B");
+      client.publish(joystick_topic_B, "on", true);
+      
     }
 
     Serial.println("-----------");
