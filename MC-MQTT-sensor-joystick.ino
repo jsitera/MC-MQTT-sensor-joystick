@@ -29,7 +29,10 @@
 #define joystick_topic_Y "PI1/joystickY"
 #define joystick_topic_B "PI1/joystickB"
 
-#define button1_topic "PI1/button" // blue
+#define button1_topic "PI1/buttonBlue" // blue
+#define button2_topic "PI1/buttonGreen" // green
+#define button3_topic "PI1/buttonRed" // red
+
 
 // =============== configuration of joystick ==============================
 int JoyStick_X = 32; // Analog Pin  X
@@ -189,19 +192,30 @@ void loop(){
 
 void onButton1Released(Button& btn, uint16_t duration){
   // blue one
-  Serial.print("Button1 blue pressed");
+  Serial.println("Button1 blue pressed");
   if (B1CurrState) {
     B1CurrState = false;
-    digitalWrite(led1Pin, HIGH);
+    digitalWrite(led1Pin, LOW);
     client.publish(button1_topic, "off", true);
   } else {
     B1CurrState = true;
-    digitalWrite(led1Pin, LOW);
+    digitalWrite(led1Pin, HIGH);
     client.publish(button1_topic, "on", true);
   }
 }
 
 void onButton2Released(Button& btn, uint16_t duration){
+  // green one - the same as blue
+  Serial.println("Button2 green pressed");
+  if (B2CurrState) {
+    B2CurrState = false;
+    digitalWrite(led2Pin, LOW);
+    client.publish(button2_topic, "off", true);
+  } else {
+    B2CurrState = true;
+    digitalWrite(led2Pin, HIGH);
+    client.publish(button2_topic, "on", true);
+  }
 }
 
 void onButton3Released(Button& btn, uint16_t duration){
