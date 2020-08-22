@@ -45,8 +45,8 @@ const int led1Pin = 17;
 const int button2Pin = 18;   //green
 const int led2Pin = 19;
 // button3 is animated button / TNT      
-const int button3Pin = 12;   //red  
-const int led3Pin = 14;      
+const int button3Pin = 22;   //red  
+const int led3Pin = 23;      
 
 // ===================== config end ==========================================
 
@@ -219,4 +219,30 @@ void onButton2Released(Button& btn, uint16_t duration){
 }
 
 void onButton3Released(Button& btn, uint16_t duration){
+
+  Serial.println("Button3 red pressed");
+  client.publish(button3_topic, "on", true);
+
+  animationPhase=16;
+  animation.attach_ms(250, animation1); //start calling animation procedure
+
+}
+
+void animation1() {
+  Serial.print("Animation phase:");
+  Serial.println(animationPhase);
+  if (animationPhase > 3) {
+    if (animationPhase % 2 == 0) { //even
+      digitalWrite(led3Pin, HIGH);
+      Serial.println("led3 ON");
+    } else {
+      digitalWrite(led3Pin, LOW);
+      Serial.println("led3 OFF");
+    }
+  } else if (animationPhase == 1) {
+    digitalWrite(led3Pin, LOW);
+    animation.detach(); //stop calling this callback
+    Serial.println("Animation end");
+  }
+  animationPhase--;
 }
