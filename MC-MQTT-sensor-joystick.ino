@@ -3,8 +3,10 @@
 // multiple sensors button with led / animated version
 // TNT button - when pushed sends MQTT message and starts animation
 
+// Install ESP32 board by board manager, select your board (WEMOS LOLIN32)
+
 #include <WiFi.h>
-#include <PubSubClient.h>
+#include <PubSubClient.h>  //install pubsubclient O'Leary
 #include "config.h"        //configuration not included in github
 
 // library for button management using callbacks 
@@ -12,7 +14,7 @@
 #include <Button.h>
 #include <ButtonEventCallback.h>
 #include <PushButton.h>
-#include <Bounce2.h> // https://github.com/thomasfredericks/Bounce-Arduino-Wiring
+#include <Bounce2.h> // install bounce2 https://github.com/thomasfredericks/Bounce-Arduino-Wiring
 
 // callback scheduling via SimpleTimer.h not widely used on ESP, why
 // build-in Ticker.h (for ESP only)?
